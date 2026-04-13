@@ -4,12 +4,12 @@ import org.example.Interface.CapacidadCuentaBanco;
 
 public class CuentaBanco implements CapacidadCuentaBanco {
     private String cbu;
-    private String tipoCuenta;
+    private TipoCuenta tipoCuenta;
 
     private float saldo;
     private Banco bancoPadre;
 
-    public CuentaBanco(String cbu, String tipoCuenta, Banco bancoPadre) {
+    public CuentaBanco(String cbu, TipoCuenta tipoCuenta, Banco bancoPadre) {
         this.cbu = cbu;
         this.tipoCuenta = tipoCuenta;
         this.saldo = 0;
@@ -25,11 +25,11 @@ public class CuentaBanco implements CapacidadCuentaBanco {
         this.cbu = cbu;
     }
 
-    public String getTipoCuenta() {
+    public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
     }
 
-    public void setTipoCuenta(String tipoCuenta) {
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
         this.tipoCuenta = tipoCuenta;
     }
 

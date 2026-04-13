@@ -11,6 +11,7 @@ public interface CapacidadUserAdmin extends CapacidadUsers{
     Cliente buscarClientePorCbu(String cbu);
     void verClientes();
     void depositarSueldo(int idUser,float monto);
+    void darBajaCuenta(int id);
     Cliente buscarClientePorId(int id);
     void datosPorUser(int id);
     @Override

@@ -1,10 +1,11 @@
 package org.example.Entity;
 
+import org.example.Interface.CapacidadLogin;
 import org.example.Interface.CapacidadUserAdmin;
 
 import java.util.ArrayList;
 
-public class Admin  extends Usuarios implements CapacidadUserAdmin {
+public class Admin  extends Usuarios implements CapacidadUserAdmin, CapacidadLogin {
 
     private ArrayList<Cliente>clientes;
 
@@ -52,6 +53,11 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin {
     }
 
     @Override
+    public void darBajaCuenta(int id) {
+
+    }
+
+    @Override
     public Cliente buscarClientePorId(int id) {
         for (Cliente cli: clientes){
             if (cli.getId()==id){
@@ -76,5 +82,15 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin {
     @Override
     public void verMisDatos() {
         System.out.println(super.toString());
+    }
+
+    @Override
+    public void iniciarSesion() {
+
+    }
+
+    @Override
+    public void cerrarSesion() {
+
     }
 }

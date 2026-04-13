@@ -1,8 +1,9 @@
 package org.example.Entity;
 
+import org.example.Interface.CapacidadLogin;
 import org.example.Interface.CapacidadUserCliente;
 
-public class Cliente extends Usuarios implements CapacidadUserCliente {
+public class Cliente extends Usuarios implements CapacidadUserCliente, CapacidadLogin {
     private CuentaBanco cuentaBanco;
 
     public Cliente(int id, String nombre, String apellido, int dni, String direccion, String rol, CuentaBanco cuentaBanco) {
@@ -30,5 +31,15 @@ public class Cliente extends Usuarios implements CapacidadUserCliente {
 
     public void setCuentaBanco(CuentaBanco cuentaBanco) {
         this.cuentaBanco = cuentaBanco;
+    }
+
+    @Override
+    public void iniciarSesion() {
+
+    }
+
+    @Override
+    public void cerrarSesion() {
+
     }
 }

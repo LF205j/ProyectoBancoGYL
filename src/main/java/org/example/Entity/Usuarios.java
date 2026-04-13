@@ -6,9 +6,9 @@ public  abstract class Usuarios {
     private String apellido;
     private int dni;
     private String direccion;
-    private String rol;
+    private Rol rol;
 
-    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, String rol) {
+    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, Rol rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -17,11 +17,11 @@ public  abstract class Usuarios {
         this.rol = rol;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
