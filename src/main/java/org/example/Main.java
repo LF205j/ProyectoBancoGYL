@@ -70,7 +70,7 @@ public class Main {
                             System.out.println("4)Depositar Sueldo a Cliente\n");
                             System.out.println("5)Buscar cliente por id\n");
                             System.out.println("6)Dar baja cuenta bancaria\n");
-                            System.out.println("7)Datos Cliente especifico\n");
+                            System.out.println("7)Ver mis datos\n");
                             System.out.println("0)salir\n");
                             System.out.println("--Ingrese una opcion:--\n");
                             opcion=escaner.nextInt();
@@ -95,9 +95,51 @@ public class Main {
                                     int idCliente=escaner.nextInt();
 
                                     admin1.depositarSueldo(idCliente,monto);
+                                    break;
+                                case 5:
+                                    System.out.println("Ingrese el id del cliente a buscar: ");
+                                    int id=escaner.nextInt();
+                                    admin1.buscarClientePorId(id);
+                                    break;
+                                case 6:
+                                    break;
+                                case 7:
+                                    admin1.verMisDatos();
+                                    break;
                             }
                         } else if (u instanceof Cliente) {
+                            System.out.println("--Menu Cliente--\n");
+                            System.out.println("1)Ver mis datos\n");
+                            System.out.println("2)Hacer Transferencia\n");
+                            System.out.println("3)Buscar cliente por cbu \n");
 
+                            System.out.println("0)salir\n");
+                            System.out.println("--Ingrese una opcion:--\n");
+                            opcion=escaner.nextInt();
+
+                            switch (opcion){
+                                case 1:
+                                    cliente1.verMisDatos();
+                                    break;
+                                case 2:
+                                    admin1.verClientes();
+                                    break;
+                                case 3:
+                                    System.out.println("Ingrese el cbu del cliente:");
+                                    String cbu=escaner.nextLine();
+                                    admin1.buscarClientePorCbu(cbu);
+                                    break;
+                                case 4:
+                                    System.out.println("Ingrese el monto a depositar:");
+                                    float monto=escaner.nextFloat();
+
+                                    System.out.println("Ingrese el id del cliente:");
+                                    int idCliente=escaner.nextInt();
+
+                                    admin1.depositarSueldo(idCliente,monto);
+                                    break;
+                                
+                            }
                         }
                     }
                 }
