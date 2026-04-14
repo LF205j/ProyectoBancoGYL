@@ -5,17 +5,13 @@ import org.example.Interface.CapacidadUserAdmin;
 
 import java.util.ArrayList;
 
-public class Admin  extends Usuarios implements CapacidadUserAdmin, CapacidadLogin {
+public class Admin  extends Usuarios implements CapacidadUserAdmin,CapacidadLogin {
 
     private ArrayList<Cliente>clientes;
 
-    public Admin(int id, String nombre, String apellido, int dni, String direccion, String rol, ArrayList<Cliente> clientes) {
-        super(id, nombre, apellido, dni, direccion, rol);
+    public Admin(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, ArrayList<Cliente> clientes) {
+        super(id, nombre, apellido, dni, direccion, rol, username, password);
         this.clientes = clientes;
-    }
-
-    public Admin(int id, String nombre, String apellido, int dni, String direccion, String rol) {
-        super(id, nombre, apellido, dni, direccion, rol);
     }
 
     //Creador y asignacion de cuentas
@@ -27,7 +23,7 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin, CapacidadLog
     @Override
     public Cliente buscarClientePorCbu(String cbu) {
         for (Cliente cli: clientes){
-            if (cbu==cli.getCuentaBanco().getCbu()){
+            if (cli.getCuentaBanco()!=null && cli.getCuentaBanco().getCbu().equals(cbu)){
                 System.out.println("User encontrado");
                 return cli;
             }
@@ -85,8 +81,15 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin, CapacidadLog
     }
 
     @Override
-    public void iniciarSesion() {
-
+    public Usuarios iniciarSesion(ArrayList<Usuarios>listaUsers,String username,String password) {
+        for (Usuarios u: listaUsers){
+            if (u.getPassword().equals(password) && u.getUsername().equals(username)){
+                System.out.println("Se ingreso Exitosamente");
+                return u;
+            }
+        }
+        System.out.println("Usuario o password incorrectos \n");
+        return  null;
     }
 
     @Override

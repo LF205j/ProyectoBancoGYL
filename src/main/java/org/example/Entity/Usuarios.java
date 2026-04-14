@@ -7,14 +7,21 @@ public  abstract class Usuarios {
     private int dni;
     private String direccion;
     private Rol rol;
+    private String username;
+    private String password;
 
-    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, Rol rol) {
+    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, Rol rol,String username,String password) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.direccion = direccion;
         this.rol = rol;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Usuarios() {
     }
 
     public Rol getRol() {
@@ -23,6 +30,22 @@ public  abstract class Usuarios {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getId() {
@@ -76,4 +99,5 @@ public  abstract class Usuarios {
                 ", rol='" + rol + '\'' +
                 '}';
     }
+
 }
