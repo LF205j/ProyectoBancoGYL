@@ -63,6 +63,8 @@ public class Main {
                     if (u.getPassword().equals(password) && u.getUsername().equals(username)){
                         System.out.println("Se ingreso Exitosamente");
                         if (u instanceof Admin){
+                            usuarioNuevo=u;
+                            Admin adminTemp=(Admin)u;
                             System.out.println("--Menu Admin--\n");
                             System.out.println("1)Registrar Nuevo cliente\n");
                             System.out.println("2)Ver todos los clientes\n");
@@ -80,12 +82,12 @@ public class Main {
 
                                     break;
                                 case 2:
-                                    admin1.verClientes();
+                                    adminTemp.verClientes();
                                     break;
                                 case 3:
                                     System.out.println("Ingrese el cbu del cliente:");
                                     String cbu=escaner.nextLine();
-                                    admin1.buscarClientePorCbu(cbu);
+                                    adminTemp.buscarClientePorCbu(cbu);
                                     break;
                                 case 4:
                                     System.out.println("Ingrese el monto a depositar:");
@@ -108,6 +110,8 @@ public class Main {
                                     break;
                             }
                         } else if (u instanceof Cliente) {
+                            usuarioNuevo=u;
+                            Cliente clienteTemp=(Cliente)u;
                             System.out.println("--Menu Cliente--\n");
                             System.out.println("1)Ver mis datos\n");
                             System.out.println("2)Hacer Transferencia\n");
@@ -119,38 +123,26 @@ public class Main {
 
                             switch (opcion){
                                 case 1:
-                                    cliente1.verMisDatos();
+                                    clienteTemp.verMisDatos();
                                     break;
                                 case 2:
-                                    admin1.verClientes();
+                                    //clienteTemp.verClientes();
                                     break;
                                 case 3:
                                     System.out.println("Ingrese el cbu del cliente:");
                                     String cbu=escaner.nextLine();
                                     admin1.buscarClientePorCbu(cbu);
                                     break;
-                                case 4:
-                                    System.out.println("Ingrese el monto a depositar:");
-                                    float monto=escaner.nextFloat();
+                                case 0:
 
-                                    System.out.println("Ingrese el id del cliente:");
-                                    int idCliente=escaner.nextInt();
-
-                                    admin1.depositarSueldo(idCliente,monto);
                                     break;
-                                
+
                             }
                         }
                     }
                 }
             }
         }while(opcion!=0);
-//        switch (num){
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//
-//        }
+
     }
 }

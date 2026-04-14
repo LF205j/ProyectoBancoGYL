@@ -19,9 +19,25 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
 //    }
 
     @Override
+    public void hacerTransferecia(String cbu,ArrayList<Cliente>clientes,float monto) {
+        for (Cliente cli: clientes){
+            if (cli.getCuentaBanco().getCbu().equals(cbu)){
+
+            }
+        }
+    }
+
+    @Override
     public void verMisDatos() {
         System.out.println("Datos cliente: "+super.toString() +" \n");
         System.out.println("Datos Cuenta cliente: "+this.cuentaBanco.toString() +" \n");
+    }
+
+    @Override
+    public void retirar(float monto) {
+        if (monto<this.cuentaBanco.getSaldo()){
+
+        }
     }
 
     @Override
