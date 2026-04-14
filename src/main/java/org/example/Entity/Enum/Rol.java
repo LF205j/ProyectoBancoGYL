@@ -1,0 +1,5 @@
+package org.example.Entity.Enum;
+
+public enum Rol {
+    ADMIN,CLIENTE,G_CUENTAS,G_BALANCES,G_OPERACIONES,G_TRANSACCIONES,ADMIN_BANCARIO
+}

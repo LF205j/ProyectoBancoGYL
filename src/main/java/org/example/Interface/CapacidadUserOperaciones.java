@@ -1,7 +1,11 @@
 package org.example.Interface;
 
-public interface CapacidadUserOperaciones {
-    void transferir(float monto, String cbu);
-    void depositar(float monto,String cbu);
-    void extraer(float monto,String cbu);
+public interface CapacidadUserOperaciones extends CapacidadVerNotificaciones {
+    //float monto, String cbu
+    void habilitarTransferencia(int idTransferencia);
+    void habilitarDeposito(int idDepositar);
+    void habilitarExtraccion(int idExtraccion);
+
+    @Override
+    void verNotificaciones();
 }

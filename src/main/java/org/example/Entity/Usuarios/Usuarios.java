@@ -1,4 +1,6 @@
-package org.example.Entity;
+package org.example.Entity.Usuarios;
+
+import org.example.Entity.Enum.Rol;
 
 public  abstract class Usuarios {
     private int id;

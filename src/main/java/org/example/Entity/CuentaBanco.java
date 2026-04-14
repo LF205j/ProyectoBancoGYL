@@ -1,5 +1,7 @@
 package org.example.Entity;
 
+import org.example.Entity.Enum.TipoCuenta;
+import org.example.Entity.Usuarios.Cliente;
 import org.example.Interface.CapacidadCuentaBanco;
 
 public class CuentaBanco implements CapacidadCuentaBanco {

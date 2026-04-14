@@ -3,9 +3,10 @@ package org.example;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import org.example.Entity.*;
+import org.example.Entity.Enum.Rol;
+import org.example.Entity.Enum.TipoCuenta;
+import org.example.Entity.Usuarios.*;
 
-import java.lang.reflect.Array;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,7 +22,7 @@ public class Main {
         CuentaBanco cuenta1=new CuentaBanco("NoSe123", TipoCuenta.SUELDO,banco1);
         CuentaBanco cuenta2=new CuentaBanco("Mejor234",TipoCuenta.SUELDO,banco2);
 
-        Cliente cliente1= new Cliente(1,"Ezequiel","Villareal",12344533,"Callao 295",Rol.CLIENTE,"cliente1","pass1",cuenta1);
+        Cliente cliente1= new Cliente(1,"Ezequiel","Villareal",12344533,"Callao 295", Rol.CLIENTE,"cliente1","pass1",cuenta1);
         clientes.add(cliente1);
 
         usuarios.add(cliente1);
@@ -138,6 +139,103 @@ public class Main {
                                     break;
 
                             }
+                        } else if (u instanceof GestorBalances) {
+                                usuarioNuevo=u;
+                                GestorBalances GBalance=(GestorBalances) u;
+
+                                System.out.println("--Menu Gestor Balances--\n");
+                                System.out.println("1)Hacer Balance Sucursales\n");
+                                System.out.println("2)Hacer Balance cuentas X sucursal\n");
+                                System.out.println("0)salir\n");
+                                System.out.println("--Ingrese una opcion:--\n");
+                                opcion=escaner.nextInt();
+
+                                switch (opcion){
+                                    case 1:
+
+                                        float balanceSucursales=GBalance.hacerBalancesSucursales();
+                                        System.out.println("El balance de todas las sucursales es de: "+balanceSucursales+" $");
+                                        break;
+                                    case 2:
+                                        System.out.println("Ingrese el id de la sucursal a la que se hara balance de sus cuentas asignadas: ");
+                                        int idSucursal=escaner.nextInt();
+
+                                        float balanceCuentasXSucursal=GBalance.hacerBalancesSucursales();
+                                        System.out.println("El balance de todas las cuentas de la sucursal: "+idSucursal+" es de: "+balanceCuentasXSucursal+" $");
+                                        break;
+                                    case 0:
+                                        break;
+
+                                }
+                        } else if (u instanceof GestorCuentasBancarias) {
+                                usuarioNuevo=u;
+                                GestorCuentasBancarias GCuentasBancarias=(GestorCuentasBancarias) u;
+
+                                System.out.println("--Menu Gestor Cuentas Bancarias--\n");
+                                System.out.println("1)Dar Baja la cuenta especifica\n");
+                                System.out.println("2)Crear cuenta \n");
+                                System.out.println("3)Realizar Apertura cuenta\n");
+                                System.out.println("0)salir\n");
+                                System.out.println("--Ingrese una opcion:--\n");
+                                opcion=escaner.nextInt();
+
+                                switch (opcion){
+                                    case 1:
+                                        System.out.println("Ingresa el id de la cuenta que se quiere dar de baja: ");
+                                        int idBaja=escaner.nextInt();
+                                        GCuentasBancarias.darDeBajaCuenta(idBaja);
+                                        break;
+                                    case 2:
+                                        CuentaBanco nuevaCuenta=GCuentasBancarias.crearCuenta();
+                                        //Hacer array de cuentasBancarias
+                                        break;
+                                    case 3:
+                                        System.out.println("Ingrese el id de la cuenta que se tiene que habilitar: ");
+                                        int idHabilitar=escaner.nextInt();
+                                        GCuentasBancarias.realizarApertura(idHabilitar);
+                                        break;
+                                    case 0:
+                                        break;
+                                }
+                        } else if (u instanceof  GestorOperaciones) {
+                            usuarioNuevo=u;
+                            GestorOperaciones GOperaciones=(GestorOperaciones) u;
+                            System.out.println("--Menu Gestor Operaciones--\n");
+                            System.out.println("1)Habilitar Transferencia\n");
+                            System.out.println("2)Habilitar Deposito \n");
+                            System.out.println("3)Habilitar extraccion\n");
+                            System.out.println("4)Ver Notificaciones\n");
+                            System.out.println("0)salir\n");
+                            System.out.println("--Ingrese una opcion:--\n");
+                            opcion=escaner.nextInt();
+                            switch (opcion){
+                                case 1:
+                                    System.out.println("Ingresa el id de la transferencia que se quiere habilitar: ");
+                                    int idTransferencia=escaner.nextInt();
+                                    GOperaciones.habilitarTransferencia(idTransferencia);
+                                    break;
+                                case 2:
+                                    System.out.println("Ingresa el id del deposito que se quiere habilitar: ");
+                                    int idDeposito=escaner.nextInt();
+                                    GOperaciones.habilitarDeposito(idDeposito);
+                                    break;
+                                case 3:
+                                    System.out.println("Ingresa el id de la extraccion que se quiere habilitar: ");
+                                    int idExtraccion=escaner.nextInt();
+                                    GOperaciones.habilitarExtraccion(idExtraccion);
+                                    break;
+                                case 4:
+                                    GOperaciones.verNotificaciones();
+                                    break;
+                                case 0:
+                                    break;
+
+                            }
+
+                        } else if (u instanceof GestorTransacciones) {
+                            usuarioNuevo=u;
+                            GestorTransacciones GTransacciones=(GestorTransacciones)u;
+
                         }
                     }
                 }

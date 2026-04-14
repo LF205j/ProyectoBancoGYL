@@ -1,8 +1,6 @@
 package org.example.Interface;
 
-import org.example.Entity.Cliente;
-
-import java.util.ArrayList;
+import org.example.Entity.Usuarios.Cliente;
 
 public interface CapacidadUserAdmin extends CapacidadUsers{
 

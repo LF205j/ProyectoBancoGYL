@@ -1,6 +1,6 @@
 package org.example.Interface;
 
-import org.example.Entity.Cliente;
+import org.example.Entity.Usuarios.Cliente;
 
 import java.util.ArrayList;
 
@@ -11,4 +11,6 @@ public interface CapacidadUserCliente extends CapacidadUsers{
     @Override
     void verMisDatos();
     void retirar(float monto);
+    void depositar(float monto);
+    void transferir(float monto);
 }

@@ -1,6 +1,6 @@
 package org.example.Interface;
 
-import org.example.Entity.Usuarios;
+import org.example.Entity.Usuarios.Usuarios;
 
 import java.util.ArrayList;
 

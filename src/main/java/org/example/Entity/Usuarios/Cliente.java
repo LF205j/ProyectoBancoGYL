@@ -1,5 +1,7 @@
-package org.example.Entity;
+package org.example.Entity.Usuarios;
 
+import org.example.Entity.CuentaBanco;
+import org.example.Entity.Enum.Rol;
 import org.example.Interface.CapacidadLogin;
 import org.example.Interface.CapacidadUserCliente;
 
@@ -38,6 +40,16 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
         if (monto<this.cuentaBanco.getSaldo()){
 
         }
+    }
+
+    @Override
+    public void depositar(float monto) {
+
+    }
+
+    @Override
+    public void transferir(float monto) {
+
     }
 
     @Override

@@ -1,5 +1,6 @@
-package org.example.Entity;
+package org.example.Entity.Usuarios;
 
+import org.example.Entity.Enum.Rol;
 import org.example.Interface.CapacidadLogin;
 import org.example.Interface.CapacidadUserAdmin;
 
