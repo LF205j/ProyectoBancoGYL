@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // --- INICIALIZACIÓN DE DATOS ---
+
         ArrayList<Cliente> clientes = new ArrayList<>();
         ArrayList<Usuarios> usuarios = new ArrayList<>();
 
@@ -25,11 +25,11 @@ public class Main {
         Banco bancoIcbc = new Banco(2, "ICBC", "Direccion 234", sucursalesIcbc);
 
         Sucursal sucursal1 = new Sucursal("Sucursal Urquiza", 1, "Larralde 231", bancoGalicia, usuarios, clientes);
-
-        CuentaBanco cuentaBanco1 = new CuentaBanco(1, "CBU1", TipoCuenta.SUELDO, 0, bancoGalicia);
-        CuentaBanco cuentaBanco2 = new CuentaBanco(2, "CBU2", TipoCuenta.SUELDO, 0, bancoGalicia);
-        CuentaBanco cuentaBanco3 = new CuentaBanco(3, "CBU3", TipoCuenta.SUELDO, 0, bancoGalicia);
-        CuentaBanco cuentaBanco4 = new CuentaBanco(4, "CBU4", TipoCuenta.SUELDO, 0, bancoGalicia);
+        sucursalesGalicia.add(sucursal1);
+        CuentaBanco cuentaBanco1 = new CuentaBanco(1, "CBU1", TipoCuenta.SUELDO, 0, bancoGalicia,false);
+        CuentaBanco cuentaBanco2 = new CuentaBanco(2, "CBU2", TipoCuenta.SUELDO, 0, bancoGalicia,false);
+        CuentaBanco cuentaBanco3 = new CuentaBanco(3, "CBU3", TipoCuenta.SUELDO, 0, bancoGalicia,false);
+        CuentaBanco cuentaBanco4 = new CuentaBanco(4, "CBU4", TipoCuenta.SUELDO, 0, bancoGalicia,false);
 
         Admin admin1 = new Admin(2, "Enzo", "Fernandez", 4522233, "Larralde 3421", Rol.ADMIN, "admin1", "pass3", bancoGalicia, sucursal1, cuentaBanco2);
         AdminBancario adminGalicia = new AdminBancario(1, "Lautaro ", "Fernandez", 45236660, "Valdenegro 3430", Rol.ADMIN_BANCARIO, "adminG", "passG", bancoGalicia, sucursal1, cuentaBanco4);
@@ -37,11 +37,13 @@ public class Main {
 
         sucursal1.getClientesSucursal().add(cliente1);
 
+
         GestorClientes gestorClientes = new GestorClientes(3, "Ezequiel", "Villareal", 12344, "Direccion generica 123", Rol.G_CLIENTES, "GCuser", "GCpass", bancoGalicia, sucursal1, cuentaBanco3);
 
         usuarios.add(gestorClientes);
         usuarios.add(admin1);
         usuarios.add(adminGalicia);
+        usuarios.add(cliente1);
 
         Scanner escaner = new Scanner(System.in);
         Usuarios usuarioLogueado = null;
@@ -150,15 +152,32 @@ public class Main {
                 }
 
                 else if (usuarioLogueado instanceof Cliente) {
+
                     Cliente cli = new Cliente(usuarioLogueado);
                     System.out.println("\n--Menu Cliente--");
-                    System.out.println("1)Ver Datos\n0)Cerrar Sesion");
+                    System.out.println("1)Ver Datos\n2)Transferis\n3)Depositar\n4)Extraer\n0)Cerrar Sesion");
                     opcion = escaner.nextInt();
                     escaner.nextLine();
 
                     switch (opcion) {
-                        case 1 -> cli.verMisDatos();
-                        case 0 -> usuarioLogueado = null;
+                        case 1 : cli.verMisDatos();
+                        case 2:
+                            System.out.println("Ingrese el monto a transferir: \n");
+                            float monto=escaner.nextFloat();
+                            System.out.println("Ingrese el cbu a transferir: \n");
+                            String cbu=escaner.nextLine();
+                            cli.transferir(monto,cbu);
+                            break;
+                        case 3:
+                            System.out.println("Ingrese el monto a transferir: \n");
+                            float montoDeposito=escaner.nextFloat();
+                            cli.depositar(montoDeposito);
+                            break;
+                        case 4:
+                            System.out.println("Ingrese el monto a transferir: \n");
+                            float montoExtraccion=escaner.nextFloat();
+                            cli.extraer(montoExtraccion);
+                        case 0 : usuarioLogueado = null;
                     }
                 }
             }

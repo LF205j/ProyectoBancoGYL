@@ -22,6 +22,26 @@ public class Sucursal {
         this.clientesSucursal = clientesSucursal;
     }
 
+    public Sucursal(Sucursal s){
+        this.id=s.getId();
+        this.nombreSucursal=s.getNombreSucursal();
+        this.direccionSucursal=s.getDireccionSucursal();
+        if (s.getClientesSucursal() != null) {
+            this.clientesSucursal = new ArrayList<>(s.clientesSucursal);
+        } else {
+            this.clientesSucursal = new ArrayList<>();
+        }
+        if (s.getUsuariosAdmin() != null) {
+            this.usuariosAdmin = new ArrayList<>(s.usuariosAdmin);
+        } else {
+            this.usuariosAdmin = new ArrayList<>();
+        }
+
+    }
+    public Sucursal() {
+    }
+
+
     public ArrayList<Usuarios> getUsuariosAdmin() {
         return usuariosAdmin;
     }

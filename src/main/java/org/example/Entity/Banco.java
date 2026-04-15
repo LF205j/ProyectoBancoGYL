@@ -1,5 +1,7 @@
 package org.example.Entity;
 
+import org.example.Entity.Usuarios.Usuarios;
+
 import java.util.ArrayList;
 
 public class Banco {
@@ -9,6 +11,7 @@ public class Banco {
     private ArrayList<Sucursal> sucursales;
 
 
+
     public Banco(int id, String nombreBanco, String direccion, ArrayList<Sucursal> sucursales) {
         this.id = id;
         this.nombreBanco = nombreBanco;
@@ -16,7 +19,28 @@ public class Banco {
         this.sucursales = sucursales;
     }
 
+    public Banco(Banco b) {
+        this.id = b.id;
+        this.nombreBanco = b.nombreBanco;
+        this.direccion = b.direccion;
+        if (b.sucursales != null) {
+            this.sucursales = new ArrayList<>(b.sucursales);
+        } else {
+            this.sucursales = new ArrayList<>();
+        }
+    }
 
+
+    public Banco() {
+    }
+
+    public ArrayList<Sucursal> getSucursales() {
+        return sucursales;
+    }
+
+    public void setSucursales(ArrayList<Sucursal> sucursales) {
+        this.sucursales = sucursales;
+    }
 
     public int getId() {
         return id;

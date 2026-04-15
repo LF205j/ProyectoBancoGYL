@@ -61,7 +61,18 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin,CapacidadLogi
 
     @Override
     public void darBajaCuenta(int id) {
-
+        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+            if (cli.getCuentaBanco().getId() == id) {
+                if (cli.getCuentaBanco().getEstado()) { // Si está abierta (true)
+                    cli.getCuentaBanco().setEstado(false);
+                    System.out.println("Cuenta dada de baja con éxito.");
+                } else {
+                    System.out.println("La cuenta ya se encuentra dada de baja.");
+                }
+                return;
+            }
+        }
+        System.out.println("No se encontró la cuenta.");
     }
 
     @Override

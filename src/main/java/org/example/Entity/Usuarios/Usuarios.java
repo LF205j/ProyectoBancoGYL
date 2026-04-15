@@ -32,6 +32,8 @@ public  abstract class Usuarios {
         this.cuentaBanco = cuentaBanco;
     }
 
+
+
     public CuentaBanco getCuentaBanco() {
         return cuentaBanco;
     }

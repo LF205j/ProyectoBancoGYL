@@ -19,7 +19,12 @@ public class GestorBalances extends Usuarios implements CapacidadUserBalances {
 
     @Override
     public float hacerBalanceCuentas() {
-        return 0;
+        float total = 0;
+        // Recorre los clientes de la sucursal donde trabaja el gestor
+        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+            total += cli.getCuentaBanco().getSaldo();
+        }
+        return total;
     }
 
     @Override

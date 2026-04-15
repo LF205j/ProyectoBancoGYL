@@ -20,6 +20,10 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
                 u.getSucursal(), u.getCuentaBanco());
     }
 
+    public Cliente() {
+    }
+
+
     //    public Cliente(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password) {
 //        super(id, nombre, apellido, dni, direccion, rol, username, password);
 //    }
@@ -41,9 +45,12 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
 
     @Override
     public void extraer(float monto) {
-        if (monto<this.getCuentaBanco().getSaldo()){
-            float extraccion= this.getCuentaBanco().getSaldo()-monto;
-            this.getCuentaBanco().setSaldo(extraccion);
+        if (monto > 0 && monto <= this.getCuentaBanco().getSaldo()) {
+            float nuevoSaldo = this.getCuentaBanco().getSaldo() - monto;
+            this.getCuentaBanco().setSaldo(nuevoSaldo);
+            System.out.println("Extracción exitosa. Nuevo saldo: " + nuevoSaldo);
+        } else {
+            System.out.println("Fondos insuficientes o monto inválido.");
         }
     }
 
@@ -58,7 +65,26 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
 
     @Override
     public void transferir(float monto,String cbu) {
+        if (monto > 0 && monto <= this.getCuentaBanco().getSaldo()) {
+            Cliente destino = null;
+            // Buscamos al cliente por CBU en la lista de la sucursal
+            for (Cliente c : this.getSucursal().getClientesSucursal()) {
+                if (c.getCuentaBanco().getCbu().equals(cbu)) {
+                    destino = c;
+                    break;
+                }
+            }
 
+            if (destino != null) {
+                this.extraer(monto); // Quitamos dinero de esta cuenta
+                destino.depositar(monto); // Sumamos dinero a la otra
+                System.out.println("Transferencia enviada a: " + destino.getNombre());
+            } else {
+                System.out.println("No se encontró el CBU de destino.");
+            }
+        } else {
+            System.out.println("Saldo insuficiente para transferir.");
+        }
     }
 
     @Override

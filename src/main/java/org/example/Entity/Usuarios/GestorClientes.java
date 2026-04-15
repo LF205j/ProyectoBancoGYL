@@ -37,19 +37,46 @@ public class GestorClientes extends Usuarios implements CapacidadUserGestionClie
     public void crearCliente() {
         Scanner escaner=new Scanner(System.in);
 
+        System.out.println("Ingrese un id: ");
+        int idCliente=escaner.nextInt();
         System.out.println("Ingrese el nombre del nuevo cliente");
         String nombreCli=escaner.nextLine();
         System.out.println("Ingrese el apellido del nuevo cliente :");
         String apellidoCli=escaner.nextLine();
-        System.out.println();
+        System.out.println("Ingrese su dni:");
+        int dniCli=escaner.nextInt();
+        System.out.println("Ingrese su direccion: ");
+        String direccion=escaner.nextLine();
+        System.out.println("Ingrese su username: ");
+        String username=escaner.nextLine();
+        System.out.println("Ingrese su password: ");
+        String password=escaner.nextLine();
+        Banco bancoCli=new Banco(getBanco());
+        Sucursal sucuCli=new Sucursal(getSucursal());
+
+        CuentaBanco cuentaBanco=new CuentaBanco();//Lo asigna el GestorCuentaBancos
+
+        Cliente nuevoCliente=new Cliente(idCliente,nombreCli,apellidoCli,dniCli,direccion,Rol.CLIENTE,nombreCli,apellidoCli,bancoCli,sucuCli,cuentaBanco);
 
     }
 
     @Override
     public void buscarClientePorId(int id) {
-        Cliente cli=this.getSucursal().getClientesSucursal().get(id);
-        cli.verMisDatos();
+        // 1. Obtenemos la lista de la sucursal
+        ArrayList<Cliente> clientes = this.getSucursal().getClientesSucursal();
+        boolean encontrado = false;
 
+        // 2. Recorremos buscando la coincidencia de ID
+        for (Cliente cli : clientes) {
+            if (cli.getId() == id) { // Comparamos el atributo ID
+                cli.verMisDatos();
+                encontrado = true;
+                break;
+            }
+        }
 
+        if (!encontrado) {
+            System.out.println("No se encontró ningún cliente con el ID: " + id);
+        }
     }
 }
