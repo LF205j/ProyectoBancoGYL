@@ -1,6 +1,9 @@
 package org.example.Entity.Usuarios;
 
+import org.example.Entity.Banco;
+import org.example.Entity.CuentaBanco;
 import org.example.Entity.Enum.Rol;
+import org.example.Entity.Sucursal;
 
 public  abstract class Usuarios {
     private int id;
@@ -11,8 +14,11 @@ public  abstract class Usuarios {
     private Rol rol;
     private String username;
     private String password;
+    private Banco banco;
+    private Sucursal sucursal;
+    private CuentaBanco cuentaBanco;
 
-    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, Rol rol,String username,String password) {
+    public Usuarios(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, Banco banco, Sucursal sucursal, CuentaBanco cuentaBanco) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -21,6 +27,33 @@ public  abstract class Usuarios {
         this.rol = rol;
         this.username = username;
         this.password = password;
+        this.banco = banco;
+        this.sucursal = sucursal;
+        this.cuentaBanco = cuentaBanco;
+    }
+
+    public CuentaBanco getCuentaBanco() {
+        return cuentaBanco;
+    }
+
+    public void setCuentaBanco(CuentaBanco cuentaBanco) {
+        this.cuentaBanco = cuentaBanco;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Usuarios() {

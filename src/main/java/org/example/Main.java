@@ -2,6 +2,8 @@ package org.example;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+
 import org.example.Entity.*;
 import org.example.Entity.Enum.Rol;
 import org.example.Entity.Enum.TipoCuenta;
@@ -10,237 +12,156 @@ import org.example.Entity.Usuarios.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Main {
-    static void main() {
-        ArrayList<Cliente>clientes=new ArrayList<>();
-        ArrayList<Usuarios>usuarios=new ArrayList<>();
+    public static void main(String[] args) {
+        // --- INICIALIZACIÓN DE DATOS ---
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        ArrayList<Usuarios> usuarios = new ArrayList<>();
 
-        Banco banco1=new Banco(1,"Galicia","Direccion 123");
-        Banco banco2=new Banco(2,"ICBC","Direccion 234");
+        ArrayList<Sucursal> sucursalesIcbc = new ArrayList<>();
+        ArrayList<Sucursal> sucursalesGalicia = new ArrayList<>();
 
-        CuentaBanco cuenta1=new CuentaBanco("NoSe123", TipoCuenta.SUELDO,banco1);
-        CuentaBanco cuenta2=new CuentaBanco("Mejor234",TipoCuenta.SUELDO,banco2);
+        Banco bancoGalicia = new Banco(1, "Galicia", "Direccion 123", sucursalesGalicia);
+        Banco bancoIcbc = new Banco(2, "ICBC", "Direccion 234", sucursalesIcbc);
 
-        Cliente cliente1= new Cliente(1,"Ezequiel","Villareal",12344533,"Callao 295", Rol.CLIENTE,"cliente1","pass1",cuenta1);
-        clientes.add(cliente1);
+        Sucursal sucursal1 = new Sucursal("Sucursal Urquiza", 1, "Larralde 231", bancoGalicia, usuarios, clientes);
 
-        usuarios.add(cliente1);
-        Cliente cliente2= new Cliente(2,"Lautaro","Fernandez",23463,"Valdenegro 1920",Rol.CLIENTE,"cliente2","pass2",cuenta2);
-        clientes.add(cliente2);
-        usuarios.add(cliente2);
+        CuentaBanco cuentaBanco1 = new CuentaBanco(1, "CBU1", TipoCuenta.SUELDO, 0, bancoGalicia);
+        CuentaBanco cuentaBanco2 = new CuentaBanco(2, "CBU2", TipoCuenta.SUELDO, 0, bancoGalicia);
+        CuentaBanco cuentaBanco3 = new CuentaBanco(3, "CBU3", TipoCuenta.SUELDO, 0, bancoGalicia);
+        CuentaBanco cuentaBanco4 = new CuentaBanco(4, "CBU4", TipoCuenta.SUELDO, 0, bancoGalicia);
 
-        Admin admin1=new Admin(1,"Enzo","Fernandez",4522233,"Larralde 3421",Rol.ADMIN,"admin1","pass3",clientes);
+        Admin admin1 = new Admin(2, "Enzo", "Fernandez", 4522233, "Larralde 3421", Rol.ADMIN, "admin1", "pass3", bancoGalicia, sucursal1, cuentaBanco2);
+        AdminBancario adminGalicia = new AdminBancario(1, "Lautaro ", "Fernandez", 45236660, "Valdenegro 3430", Rol.ADMIN_BANCARIO, "adminG", "passG", bancoGalicia, sucursal1, cuentaBanco4);
+        Cliente cliente1 = new Cliente(1, "Nicolas", "Jardel", 235552, "San bernardo 123", Rol.CLIENTE, "Cuser", "Cpass", bancoGalicia, sucursal1, cuentaBanco1);
+
+        sucursal1.getClientesSucursal().add(cliente1);
+
+        GestorClientes gestorClientes = new GestorClientes(3, "Ezequiel", "Villareal", 12344, "Direccion generica 123", Rol.G_CLIENTES, "GCuser", "GCpass", bancoGalicia, sucursal1, cuentaBanco3);
+
+        usuarios.add(gestorClientes);
         usuarios.add(admin1);
+        usuarios.add(adminGalicia);
 
-        cuenta1.verDatos();
-        cliente1.verMisDatos();
-        //System.out.println("El cliente : "+cliente1.getNombre()+" tiene la cuenta con el id: "+cuenta1.getId());
-        admin1.buscarClientePorId(1);
-        admin1.depositarSueldo(1,50000);
-        System.out.println("HOLA");
-        cliente1.getCuentaBanco().realizarTransferencia(150,admin1.buscarClientePorCbu("Mejor234"));
-        System.out.println("sssssss");
-        cliente1.verMisDatos();
-        cliente2.verMisDatos();
+        Scanner escaner = new Scanner(System.in);
+        Usuarios usuarioLogueado = null;
+        int opcion = -1;
 
-        Scanner escaner=new Scanner(System.in);
-        Usuarios usuarioNuevo=null;
-        int opcion=0;
-
+        // --- BUCLE PRINCIPAL ---
         do {
-            System.out.println("--Bienvenido Al banco--\n");
+            if (usuarioLogueado == null) {
+                System.out.println("\n--Bienvenido Al banco--");
+                System.out.println("--Inicio de sesion--");
+                System.out.print("Ingrese su Nombre de usuario: ");
+                String username = escaner.nextLine();
+                System.out.print("Ingrese su contrasenia: ");
+                String password = escaner.nextLine();
 
+                for (Usuarios u : usuarios) {
+                    if (u.getPassword().equals(password) && u.getUsername().equals(username)) {
+                        usuarioLogueado = u;
+                        System.out.println("Se ingreso Exitosamente como: " + u.getRol());
+                        break;
+                    }
+                }
+                if (usuarioLogueado == null) System.out.println("Credenciales incorrectas.");
 
-            if (usuarioNuevo==null){
-                System.out.println("--Inicio de sesion--\n");
-                System.out.println("Ingrese su Nombre de usuario: \n");
-                String username=escaner.nextLine();
+            } else {
+                // --- PROCESAMIENTO DE MENÚS SEGÚN ROL ---
 
-                System.out.println("Ingrese su contrasenia: \n");
-                String password=escaner.nextLine();
+                if (usuarioLogueado instanceof GestorClientes) {
+                    GestorClientes gClientes = new GestorClientes(usuarioLogueado);
+                    System.out.println("\n--Menu Gestor Clientes--");
+                    System.out.println("1)Ver clientes\n2)Crear Cliente\n3)Buscar cliente por id\n0)Cerrar Sesion");
+                    System.out.print("Opcion: ");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine(); // Limpiar buffer
 
-                for (Usuarios u: usuarios){
-                    if (u.getPassword().equals(password) && u.getUsername().equals(username)){
-                        System.out.println("Se ingreso Exitosamente");
-                        if (u instanceof Admin){
-                            usuarioNuevo=u;
-                            Admin adminTemp=(Admin)u;
-                            System.out.println("--Menu Admin--\n");
-                            System.out.println("1)Registrar Nuevo cliente\n");
-                            System.out.println("2)Ver todos los clientes\n");
-                            System.out.println("3)Buscar cliente por cbu \n");
-                            System.out.println("4)Depositar Sueldo a Cliente\n");
-                            System.out.println("5)Buscar cliente por id\n");
-                            System.out.println("6)Dar baja cuenta bancaria\n");
-                            System.out.println("7)Ver mis datos\n");
-                            System.out.println("0)salir\n");
-                            System.out.println("--Ingrese una opcion:--\n");
-                            opcion=escaner.nextInt();
-
-                            switch (opcion){
-                                case 1:
-
-                                    break;
-                                case 2:
-                                    adminTemp.verClientes();
-                                    break;
-                                case 3:
-                                    System.out.println("Ingrese el cbu del cliente:");
-                                    String cbu=escaner.nextLine();
-                                    adminTemp.buscarClientePorCbu(cbu);
-                                    break;
-                                case 4:
-                                    System.out.println("Ingrese el monto a depositar:");
-                                    float monto=escaner.nextFloat();
-
-                                    System.out.println("Ingrese el id del cliente:");
-                                    int idCliente=escaner.nextInt();
-
-                                    admin1.depositarSueldo(idCliente,monto);
-                                    break;
-                                case 5:
-                                    System.out.println("Ingrese el id del cliente a buscar: ");
-                                    int id=escaner.nextInt();
-                                    admin1.buscarClientePorId(id);
-                                    break;
-                                case 6:
-                                    break;
-                                case 7:
-                                    admin1.verMisDatos();
-                                    break;
-                            }
-                        } else if (u instanceof Cliente) {
-                            usuarioNuevo=u;
-                            Cliente clienteTemp=(Cliente)u;
-                            System.out.println("--Menu Cliente--\n");
-                            System.out.println("1)Ver mis datos\n");
-                            System.out.println("2)Hacer Transferencia\n");
-                            System.out.println("3)Buscar cliente por cbu \n");
-
-                            System.out.println("0)salir\n");
-                            System.out.println("--Ingrese una opcion:--\n");
-                            opcion=escaner.nextInt();
-
-                            switch (opcion){
-                                case 1:
-                                    clienteTemp.verMisDatos();
-                                    break;
-                                case 2:
-                                    //clienteTemp.verClientes();
-                                    break;
-                                case 3:
-                                    System.out.println("Ingrese el cbu del cliente:");
-                                    String cbu=escaner.nextLine();
-                                    admin1.buscarClientePorCbu(cbu);
-                                    break;
-                                case 0:
-
-                                    break;
-
-                            }
-                        } else if (u instanceof GestorBalances) {
-                                usuarioNuevo=u;
-                                GestorBalances GBalance=(GestorBalances) u;
-
-                                System.out.println("--Menu Gestor Balances--\n");
-                                System.out.println("1)Hacer Balance Sucursales\n");
-                                System.out.println("2)Hacer Balance cuentas X sucursal\n");
-                                System.out.println("0)salir\n");
-                                System.out.println("--Ingrese una opcion:--\n");
-                                opcion=escaner.nextInt();
-
-                                switch (opcion){
-                                    case 1:
-
-                                        float balanceSucursales=GBalance.hacerBalancesSucursales();
-                                        System.out.println("El balance de todas las sucursales es de: "+balanceSucursales+" $");
-                                        break;
-                                    case 2:
-                                        System.out.println("Ingrese el id de la sucursal a la que se hara balance de sus cuentas asignadas: ");
-                                        int idSucursal=escaner.nextInt();
-
-                                        float balanceCuentasXSucursal=GBalance.hacerBalancesSucursales();
-                                        System.out.println("El balance de todas las cuentas de la sucursal: "+idSucursal+" es de: "+balanceCuentasXSucursal+" $");
-                                        break;
-                                    case 0:
-                                        break;
-
-                                }
-                        } else if (u instanceof GestorCuentasBancarias) {
-                                usuarioNuevo=u;
-                                GestorCuentasBancarias GCuentasBancarias=(GestorCuentasBancarias) u;
-
-                                System.out.println("--Menu Gestor Cuentas Bancarias--\n");
-                                System.out.println("1)Dar Baja la cuenta especifica\n");
-                                System.out.println("2)Crear cuenta \n");
-                                System.out.println("3)Realizar Apertura cuenta\n");
-                                System.out.println("0)salir\n");
-                                System.out.println("--Ingrese una opcion:--\n");
-                                opcion=escaner.nextInt();
-
-                                switch (opcion){
-                                    case 1:
-                                        System.out.println("Ingresa el id de la cuenta que se quiere dar de baja: ");
-                                        int idBaja=escaner.nextInt();
-                                        GCuentasBancarias.darDeBajaCuenta(idBaja);
-                                        break;
-                                    case 2:
-                                        CuentaBanco nuevaCuenta=GCuentasBancarias.crearCuenta();
-                                        //Hacer array de cuentasBancarias
-                                        break;
-                                    case 3:
-                                        System.out.println("Ingrese el id de la cuenta que se tiene que habilitar: ");
-                                        int idHabilitar=escaner.nextInt();
-                                        GCuentasBancarias.realizarApertura(idHabilitar);
-                                        break;
-                                    case 0:
-                                        break;
-                                }
-                        } else if (u instanceof  GestorOperaciones) {
-                            usuarioNuevo=u;
-                            GestorOperaciones GOperaciones=(GestorOperaciones) u;
-                            System.out.println("--Menu Gestor Operaciones--\n");
-                            System.out.println("1)Habilitar Transferencia\n");
-                            System.out.println("2)Habilitar Deposito \n");
-                            System.out.println("3)Habilitar extraccion\n");
-                            System.out.println("4)Ver Notificaciones\n");
-                            System.out.println("0)salir\n");
-                            System.out.println("--Ingrese una opcion:--\n");
-                            opcion=escaner.nextInt();
-                            switch (opcion){
-                                case 1:
-                                    System.out.println("Ingresa el id de la transferencia que se quiere habilitar: ");
-                                    int idTransferencia=escaner.nextInt();
-                                    GOperaciones.habilitarTransferencia(idTransferencia);
-                                    break;
-                                case 2:
-                                    System.out.println("Ingresa el id del deposito que se quiere habilitar: ");
-                                    int idDeposito=escaner.nextInt();
-                                    GOperaciones.habilitarDeposito(idDeposito);
-                                    break;
-                                case 3:
-                                    System.out.println("Ingresa el id de la extraccion que se quiere habilitar: ");
-                                    int idExtraccion=escaner.nextInt();
-                                    GOperaciones.habilitarExtraccion(idExtraccion);
-                                    break;
-                                case 4:
-                                    GOperaciones.verNotificaciones();
-                                    break;
-                                case 0:
-                                    break;
-
-                            }
-
-                        } else if (u instanceof GestorTransacciones) {
-                            usuarioNuevo=u;
-                            GestorTransacciones GTransacciones=(GestorTransacciones)u;
-
+                    switch (opcion) {
+                        case 1 -> gClientes.verClientes();
+                        case 2 -> gClientes.crearCliente();
+                        case 3 -> {
+                            System.out.print("ID a buscar: ");
+                            int id = escaner.nextInt();
+                            escaner.nextLine();
+                            gClientes.buscarClientePorId(id);
                         }
+                        case 0 -> usuarioLogueado = null;
+                    }
+                }
+
+                else if (usuarioLogueado instanceof AdminBancario) {
+                    AdminBancario adminB = new AdminBancario(usuarioLogueado);
+                    System.out.println("\n--Menu Admin Bancario--");
+                    System.out.println("1)Ver Datos\n0)Cerrar Sesion");
+                    System.out.print("Opcion: ");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine();
+
+                    switch (opcion) {
+                        case 1 -> adminB.verMisDatos();
+                        case 0 -> usuarioLogueado = null;
+                    }
+                }
+
+                else if (usuarioLogueado instanceof Admin) {
+                    Admin adminT = new Admin(usuarioLogueado);
+                    System.out.println("\n--Menu Admin--");
+                    System.out.println("1)Ver Clientes\n0)Cerrar Sesion");
+                    System.out.print("Opcion: ");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine();
+
+                    switch (opcion) {
+                        case 1 -> adminT.verClientes();
+                        case 0 -> usuarioLogueado = null;
+                    }
+                }
+
+                else if (usuarioLogueado instanceof GestorBalances) {
+                    GestorBalances gBalances = new GestorBalances(usuarioLogueado);
+                    System.out.println("\n--Menu Gestor Balances--");
+                    System.out.println("1)Balance Sucursales\n0)Cerrar Sesion");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine();
+
+                    switch (opcion) {
+                        case 1 -> System.out.println("Balance: " + gBalances.hacerBalancesSucursales());
+                        case 0 -> usuarioLogueado = null;
+                    }
+                }
+
+                else if (usuarioLogueado instanceof GestorCuentasBancarias) {
+                    GestorCuentasBancarias gCuentas = new GestorCuentasBancarias(usuarioLogueado);
+                    System.out.println("\n--Menu Gestor Cuentas--");
+                    System.out.println("1)Baja Cuenta\n0)Cerrar Sesion");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine();
+
+                    switch (opcion) {
+                        case 1 -> {
+                            System.out.print("ID Cuenta: ");
+                            int id = escaner.nextInt();
+                            escaner.nextLine();
+                            gCuentas.darDeBajaCuenta(id);
+                        }
+                        case 0 -> usuarioLogueado = null;
+                    }
+                }
+
+                else if (usuarioLogueado instanceof Cliente) {
+                    Cliente cli = new Cliente(usuarioLogueado);
+                    System.out.println("\n--Menu Cliente--");
+                    System.out.println("1)Ver Datos\n0)Cerrar Sesion");
+                    opcion = escaner.nextInt();
+                    escaner.nextLine();
+
+                    switch (opcion) {
+                        case 1 -> cli.verMisDatos();
+                        case 0 -> usuarioLogueado = null;
                     }
                 }
             }
-        }while(opcion!=0);
-
+        } while (true);
     }
 }

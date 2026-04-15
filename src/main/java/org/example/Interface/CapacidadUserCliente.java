@@ -10,7 +10,7 @@ public interface CapacidadUserCliente extends CapacidadUsers{
 
     @Override
     void verMisDatos();
-    void retirar(float monto);
+    void extraer(float monto);
     void depositar(float monto);
-    void transferir(float monto);
+    void transferir(float monto,String cbu);
 }

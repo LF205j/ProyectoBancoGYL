@@ -5,19 +5,28 @@ import org.example.Entity.Usuarios.Cliente;
 import org.example.Interface.CapacidadCuentaBanco;
 
 public class CuentaBanco implements CapacidadCuentaBanco {
+    private int id;
     private String cbu;
     private TipoCuenta tipoCuenta;
 
     private float saldo;
     private Banco bancoPadre;
 
-    public CuentaBanco(String cbu, TipoCuenta tipoCuenta, Banco bancoPadre) {
+    public CuentaBanco(int id, String cbu, TipoCuenta tipoCuenta, float saldo, Banco bancoPadre) {
+        this.id = id;
         this.cbu = cbu;
         this.tipoCuenta = tipoCuenta;
         this.saldo = 0;
         this.bancoPadre = bancoPadre;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCbu() {
         return cbu;

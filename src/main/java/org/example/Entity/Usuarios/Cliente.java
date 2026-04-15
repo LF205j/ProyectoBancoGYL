@@ -1,23 +1,27 @@
 package org.example.Entity.Usuarios;
 
+import org.example.Entity.Banco;
 import org.example.Entity.CuentaBanco;
 import org.example.Entity.Enum.Rol;
+import org.example.Entity.Sucursal;
 import org.example.Interface.CapacidadLogin;
 import org.example.Interface.CapacidadUserCliente;
 
 import java.util.ArrayList;
 
 public class Cliente extends Usuarios implements CapacidadUserCliente, CapacidadLogin {
-    private CuentaBanco cuentaBanco;
-
-    public Cliente(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, CuentaBanco cuentaBanco) {
-        super(id, nombre, apellido, dni, direccion, rol, username, password);
-        this.cuentaBanco = cuentaBanco;
+    public Cliente(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, Banco banco, Sucursal sucursal, CuentaBanco cuentaBanco) {
+        super(id, nombre, apellido, dni, direccion, rol, username, password, banco, sucursal, cuentaBanco);
     }
 
-    //    public Cliente(int id, String nombre, String apellido, int dni, String direccion, Rol rol, CuentaBanco cuentaBanco) {
-//        super(id, nombre, apellido, dni, direccion, rol);
-//        this.cuentaBanco = cuentaBanco;
+    public Cliente(Usuarios u) {
+        super(u.getId(), u.getNombre(), u.getApellido(), u.getDni(), u.getDireccion(),
+                u.getRol(), u.getUsername(), u.getPassword(), u.getBanco(),
+                u.getSucursal(), u.getCuentaBanco());
+    }
+
+    //    public Cliente(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password) {
+//        super(id, nombre, apellido, dni, direccion, rol, username, password);
 //    }
 
     @Override
@@ -32,40 +36,39 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
     @Override
     public void verMisDatos() {
         System.out.println("Datos cliente: "+super.toString() +" \n");
-        System.out.println("Datos Cuenta cliente: "+this.cuentaBanco.toString() +" \n");
+        System.out.println("Datos Cuenta cliente: "+this.getCuentaBanco().toString() +" \n");
     }
 
     @Override
-    public void retirar(float monto) {
-        if (monto<this.cuentaBanco.getSaldo()){
-
+    public void extraer(float monto) {
+        if (monto<this.getCuentaBanco().getSaldo()){
+            float extraccion= this.getCuentaBanco().getSaldo()-monto;
+            this.getCuentaBanco().setSaldo(extraccion);
         }
     }
 
     @Override
     public void depositar(float monto) {
+        if (monto!=0){
+            float carga=this.getCuentaBanco().getSaldo()+monto;
+            this.getCuentaBanco().setSaldo(carga);
+        }
 
     }
 
     @Override
-    public void transferir(float monto) {
+    public void transferir(float monto,String cbu) {
 
     }
 
     @Override
     public String toString() {
         return "Cliente{" +
-                "cuentaBanco=" + cuentaBanco +
+                "cuentaBanco=" + this.getCuentaBanco() +
                 '}';
     }
 
-    public CuentaBanco getCuentaBanco() {
-        return cuentaBanco;
-    }
 
-    public void setCuentaBanco(CuentaBanco cuentaBanco) {
-        this.cuentaBanco = cuentaBanco;
-    }
 
     @Override
     public Usuarios iniciarSesion(ArrayList<Usuarios> listaUsers, String username, String password) {

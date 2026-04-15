@@ -1,6 +1,8 @@
 package org.example.Interface;
 
+import org.example.Entity.Sucursal;
 import org.example.Entity.Usuarios.Cliente;
+import org.example.Entity.Usuarios.Usuarios;
 
 public interface CapacidadUserAdmin extends CapacidadUsers{
 
@@ -14,4 +16,10 @@ public interface CapacidadUserAdmin extends CapacidadUsers{
     void datosPorUser(int id);
     @Override
     void verMisDatos();
+    Usuarios crearUsuariosAdmin();
+    Cliente crearUsuariosCliente();
+    Sucursal crearSucursal();
+    void asignarResponsables();
+
+
 }

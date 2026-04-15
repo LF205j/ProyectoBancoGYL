@@ -6,14 +6,17 @@ public class Banco {
     private int id;
     private String nombreBanco;
     private String direccion;
-    //private ArrayList<Cliente> clientes;
+    private ArrayList<Sucursal> sucursales;
 
 
-    public Banco(int id, String nombreBanco, String direccion) {
+    public Banco(int id, String nombreBanco, String direccion, ArrayList<Sucursal> sucursales) {
         this.id = id;
         this.nombreBanco = nombreBanco;
         this.direccion = direccion;
+        this.sucursales = sucursales;
     }
+
+
 
     public int getId() {
         return id;
