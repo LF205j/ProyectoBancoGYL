@@ -71,6 +71,7 @@ public class Main {
             } else {
                 // --- PROCESAMIENTO DE MENÚS SEGÚN ROL ---
 
+                //Listo
                 if (usuarioLogueado instanceof GestorClientes) {
                     GestorClientes gClientes = new GestorClientes(usuarioLogueado);
                     System.out.println("\n--Menu Gestor Clientes--");
@@ -120,37 +121,54 @@ public class Main {
                     }
                 }
 
+                //listo
                 else if (usuarioLogueado instanceof GestorBalances) {
                     GestorBalances gBalances = new GestorBalances(usuarioLogueado);
                     System.out.println("\n--Menu Gestor Balances--");
-                    System.out.println("1)Balance Sucursales\n0)Cerrar Sesion");
+                    System.out.println("1)Balance Cuentas\n2)Balance de todas los Sucursales\n0)Cerrar Sesion");
                     opcion = escaner.nextInt();
                     escaner.nextLine();
 
                     switch (opcion) {
-                        case 1 -> System.out.println("Balance: " + gBalances.hacerBalancesSucursales());
-                        case 0 -> usuarioLogueado = null;
+                        case 1 :
+                            System.out.println("Balance: " + gBalances.hacerBalancesSucursales());
+                            break;
+                        case 2:
+                            gBalances.hacerBalancesSucursales();
+                            break;
+                        case 0 : usuarioLogueado = null;
                     }
                 }
 
+                //Listo
                 else if (usuarioLogueado instanceof GestorCuentasBancarias) {
                     GestorCuentasBancarias gCuentas = new GestorCuentasBancarias(usuarioLogueado);
                     System.out.println("\n--Menu Gestor Cuentas--");
-                    System.out.println("1)Baja Cuenta\n0)Cerrar Sesion");
+                    System.out.println("1)Dar Baja Cuenta\n2)Crear Cuenta Bancaria\n3)Realizar apertura y asignacion de cuenta\n0)Cerrar Sesion");
                     opcion = escaner.nextInt();
                     escaner.nextLine();
 
                     switch (opcion) {
-                        case 1 -> {
+                        case 1 :
                             System.out.print("ID Cuenta: ");
                             int id = escaner.nextInt();
                             escaner.nextLine();
                             gCuentas.darDeBajaCuenta(id);
-                        }
-                        case 0 -> usuarioLogueado = null;
+                            break;
+                        case 2:
+                            CuentaBanco nueva=gCuentas.crearCuenta();
+                            break;
+                        case 3:
+                            System.out.println("Ingrese el id de la cuenta a abrir: ");
+                            int idApertura=escaner.nextInt();
+                            gCuentas.realizarApertura(idApertura);
+                        case 0 :
+                            usuarioLogueado = null;
+                            break;
                     }
                 }
 
+                //Listo
                 else if (usuarioLogueado instanceof Cliente) {
 
                     Cliente cli = new Cliente(usuarioLogueado);

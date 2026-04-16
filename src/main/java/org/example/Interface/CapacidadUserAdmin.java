@@ -16,8 +16,10 @@ public interface CapacidadUserAdmin extends CapacidadUsers{
     void datosPorUser(int id);
     @Override
     void verMisDatos();
-    Usuarios crearUsuariosAdmin();
-    Cliente crearUsuariosCliente();
+    void crearGCuentaBancaria();
+    void crearGBalances();
+    void crearGClientes();
+    void crearCliente();
     Sucursal crearSucursal();
     void asignarResponsables();
 

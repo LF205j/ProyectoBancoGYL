@@ -1,9 +1,10 @@
 package org.example.Interface;
 
 import org.example.Entity.CuentaBanco;
+import org.example.Entity.Sucursal;
 import org.example.Entity.Usuarios.Usuarios;
 
-public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,CapacidadUserBalances,CapacidadUsers{
+public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,CapacidadUserBalances,CapacidadUsers,CapacidadUserAdmin{
     void verUsuarios();
     Usuarios crearUsuarios();
     @Override
@@ -11,6 +12,7 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
         return 0;
     }
 
+    Sucursal crearSucursal();
     @Override
     default float hacerBalancesSucursales() {
         return 0;
@@ -22,6 +24,15 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
     }
 
     @Override
+    void datosPorUser(int id);
+
+    @Override
+    void depositarSueldo(int idUser, float monto);
+
+    @Override
+    void verClientes();
+
+    @Override
     default CuentaBanco crearCuenta() {
         return null;
     }
@@ -31,4 +42,24 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
 
     }
 
+    @Override
+    void asignarCuenta(int idUser, int idCuenta);
+
+    @Override
+    void verMisDatos();
+
+    @Override
+    void crearCliente();
+
+    @Override
+    void darBajaCuenta(int id);
+
+    @Override
+    void crearGCuentaBancaria();
+
+    @Override
+    void crearGClientes();
+
+    @Override
+    void crearGBalances();
 }

@@ -29,6 +29,29 @@ public class GestorBalances extends Usuarios implements CapacidadUserBalances {
 
     @Override
     public float hacerBalancesSucursales() {
-        return 0;
+        float balanceTotalBanco = 0;
+
+        // 1. Obtenemos el banco al que pertenece este gestor
+        Banco miBanco = this.getBanco();
+
+        if (miBanco != null && miBanco.getSucursales() != null) {
+            // 2. Recorremos todas las sucursales del banco
+            for (Sucursal sucu : miBanco.getSucursales()) {
+                float balanceSucursal = 0;
+
+                // 3. De cada sucursal, recorremos sus clientes
+                if (sucu.getClientesSucursal() != null) {
+                    for (Cliente cli : sucu.getClientesSucursal()) {
+                        // Sumamos el saldo de la cuenta del cliente
+                        balanceSucursal += cli.getCuentaBanco().getSaldo();
+                    }
+                }
+
+                System.out.println("Sucursal: " + sucu.getNombreSucursal() + " - Balance: $" + balanceSucursal);
+                balanceTotalBanco += balanceSucursal;
+            }
+        }
+
+        return balanceTotalBanco;
     }
 }

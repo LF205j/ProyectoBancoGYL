@@ -8,6 +8,7 @@ import org.example.Entity.Sucursal;
 import org.example.Interface.CapacidadAdminBancario;
 import org.example.Interface.CapacidadUserCuentasBancarias;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
@@ -29,7 +30,59 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
     }
     @Override
     public Usuarios crearUsuarios() {
-        return null;
+        Scanner escaner = new Scanner(System.in);
+        System.out.println("\n--- Crear Nuevo Usuario ---");
+        System.out.println("Seleccione el tipo de usuario:");
+        System.out.println("1) Admin (Local)");
+        System.out.println("2) Gestor de Clientes");
+        System.out.println("3) Gestor de Balances");
+        System.out.println("4) Gestor de Cuentas");
+        int tipo = escaner.nextInt();
+        escaner.nextLine(); // Limpiar buffer
+
+        // Pedimos datos comunes a todos
+        System.out.print("ID: "); int id = escaner.nextInt(); escaner.nextLine();
+        System.out.print("Nombre: "); String nom = escaner.nextLine();
+        System.out.print("Apellido: "); String ape = escaner.nextLine();
+        System.out.print("DNI: "); int dni = escaner.nextInt(); escaner.nextLine();
+        System.out.print("Dirección: "); String dir = escaner.nextLine();
+        System.out.print("Username: "); String user = escaner.nextLine();
+        System.out.print("Password: "); String pass = escaner.nextLine();
+
+        Usuarios nuevoUsuario = null;
+        Rol rolElegido;
+
+        // Instanciamos según la opción
+        switch (tipo) {
+            case 1 -> {
+                rolElegido = Rol.ADMIN;
+                nuevoUsuario = new Admin(id, nom, ape, dni, dir, rolElegido, user, pass, this.getBanco(), this.getSucursal(), null);
+            }
+            case 2 -> {
+                rolElegido = Rol.G_CLIENTES;
+                nuevoUsuario = new GestorClientes(id, nom, ape, dni, dir, rolElegido, user, pass, this.getBanco(), this.getSucursal(), null);
+            }
+            case 3 -> {
+                rolElegido = Rol.G_BALANCES;
+                nuevoUsuario = new GestorBalances(id, nom, ape, dni, dir, rolElegido, user, pass, this.getBanco(), this.getSucursal(), null);
+            }
+            case 4 -> {
+                rolElegido = Rol.G_CUENTAS;
+                nuevoUsuario = new GestorCuentasBancarias(id, nom, ape, dni, dir, rolElegido, user, pass, this.getBanco(), this.getSucursal(), null);
+            }
+            default -> {
+                System.out.println("Opción inválida.");
+                return null;
+            }
+        }
+
+        // Lo agregamos a la lista de la sucursal para que persista
+        if (nuevoUsuario != null) {
+            this.getSucursal().getUsuariosAdmin().add(nuevoUsuario);
+            System.out.println("Usuario " + nuevoUsuario.getNombre() + " creado con éxito como " + nuevoUsuario.getRol());
+        }
+
+        return nuevoUsuario;
     }
 
     @Override
@@ -43,8 +96,70 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
     }
 
     @Override
+    public Sucursal crearSucursal() {
+        Scanner escaner = new Scanner(System.in);
+
+        System.out.println("\n--- Registro de Nueva Sucursal ---");
+
+        System.out.print("Ingrese el nombre de la sucursal (ej: Sucursal Centro): ");
+        String nombre = escaner.nextLine();
+
+        System.out.print("Ingrese el ID numérico: ");
+        int id = escaner.nextInt();
+        escaner.nextLine(); // Limpiar buffer
+
+        System.out.print("Ingrese la dirección: ");
+        String direccion = escaner.nextLine();
+
+        // Inicializamos las listas vacías para que no lancen NullPointerException después
+        ArrayList<Usuarios> listaAdmins = new ArrayList<>();
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
+
+        // Creamos la instancia.
+        // Usamos 'this.getBanco()' para que la sucursal sepa a qué banco pertenece.
+        Sucursal nuevaSucursal = new Sucursal(nombre, id, direccion, this.getBanco(), listaAdmins, listaClientes);
+
+        // IMPORTANTE: Agregar la sucursal a la lista del banco para que aparezca en los balances
+        if (this.getBanco() != null) {
+            this.getBanco().getSucursales().add(nuevaSucursal);
+            System.out.println("Éxito: Sucursal '" + nombre + "' vinculada al banco " + this.getBanco().getNombreBanco());
+        }
+
+        return nuevaSucursal;
+    }
+
+    @Override
+    public void asignarResponsables() {
+
+    }
+
+    @Override
     public float hacerBalancesSucursales() {
-        return 0;
+
+        float balanceTotalBanco = 0;
+
+        // 1. Obtenemos el banco al que pertenece este gestor
+        Banco miBanco = this.getBanco();
+
+        if (miBanco != null && miBanco.getSucursales() != null) {
+            // 2. Recorremos todas las sucursales del banco
+            for (Sucursal sucu : miBanco.getSucursales()) {
+                float balanceSucursal = 0;
+
+                // 3. De cada sucursal, recorremos sus clientes
+                if (sucu.getClientesSucursal() != null) {
+                    for (Cliente cli : sucu.getClientesSucursal()) {
+                        // Sumamos el saldo de la cuenta del cliente
+                        balanceSucursal += cli.getCuentaBanco().getSaldo();
+                    }
+                }
+
+                System.out.println("Sucursal: " + sucu.getNombreSucursal() + " - Balance: $" + balanceSucursal);
+                balanceTotalBanco += balanceSucursal;
+            }
+        }
+
+        return balanceTotalBanco;
     }
 
     @Override
@@ -61,6 +176,21 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
             }
         }
         System.out.println("No se encontró la cuenta.");
+    }
+
+    @Override
+    public void datosPorUser(int id) {
+
+    }
+
+    @Override
+    public void depositarSueldo(int idUser, float monto) {
+
+    }
+
+    @Override
+    public void verClientes() {
+
     }
 
     @Override
@@ -115,9 +245,127 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
         }
     }
 
+    @Override
+
+    public void asignarCuenta(int idUser, int idCuenta) {
+        Cliente clienteEncontrado = null;
+
+        // 1. Buscamos al cliente en la sucursal por su ID
+        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+            if (cli.getId() == idUser) {
+                clienteEncontrado = cli;
+                break;
+            }
+        }
+
+        if (clienteEncontrado != null) {
+
+            System.out.println("Cuenta asignada exitosamente.");
+        } else {
+            System.out.println("Error: No se encontró el cliente con ID " + idUser);
+        }
+    }
+
+    @Override
+    public Cliente buscarClientePorCbu(String cbu) {
+        return null;
+    }
+
 
     @Override
     public void verMisDatos() {
+
+    }
+
+    @Override
+    public void crearCliente() {
+        Scanner escaner=new Scanner(System.in);
+
+        System.out.println("Ingrese un id: ");
+        int idCliente=escaner.nextInt();
+        System.out.println("Ingrese el nombre del nuevo cliente");
+        String nombreCli=escaner.nextLine();
+        System.out.println("Ingrese el apellido del nuevo cliente :");
+        String apellidoCli=escaner.nextLine();
+        System.out.println("Ingrese su dni:");
+        int dniCli=escaner.nextInt();
+        System.out.println("Ingrese su direccion: ");
+        String direccion=escaner.nextLine();
+        System.out.println("Ingrese su username: ");
+        String username=escaner.nextLine();
+        System.out.println("Ingrese su password: ");
+        String password=escaner.nextLine();
+        Banco bancoCli=new Banco(getBanco());
+        Sucursal sucuCli=new Sucursal(getSucursal());
+
+        CuentaBanco cuentaBanco=new CuentaBanco();//Lo asigna el GestorCuentaBancos
+
+        Cliente nuevoCliente=new Cliente(idCliente,nombreCli,apellidoCli,dniCli,direccion,Rol.CLIENTE,nombreCli,apellidoCli,bancoCli,sucuCli,cuentaBanco);
+
+    }
+
+    @Override
+    public void darBajaCuenta(int id) {
+        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+            if (cli.getCuentaBanco().getId() == id) {
+                if (cli.getCuentaBanco().getEstado()) { // Si está abierta (true)
+                    cli.getCuentaBanco().setEstado(false);
+                    System.out.println("Cuenta dada de baja con éxito.");
+                } else {
+                    System.out.println("La cuenta ya se encuentra dada de baja.");
+                }
+                return;
+            }
+        }
+        System.out.println("No se encontró la cuenta.");
+    }
+
+    @Override
+    public Cliente buscarClientePorId(int id) {
+        for (Cliente cli: this.getSucursal().getClientesSucursal()){
+            if (cli.getId()==id){
+                System.out.println("Usuario Encontrado \n");
+                return cli;
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public void crearGCuentaBancaria() {
+        Scanner escaner = new Scanner(System.in);
+        System.out.println("\n--- Alta de Gestor de Cuentas Bancarias ---");
+
+        // Pedir datos (puedes crear un método privado 'pedirDatosComunes' para no repetir esto)
+        System.out.print("ID: ");
+        int id = escaner.nextInt(); escaner.nextLine();
+        System.out.print("Nombre: ");
+        String nom = escaner.nextLine();
+        System.out.print("Apellido: ");
+        String ape = escaner.nextLine();
+        System.out.print("DNI: ");
+        int dni = escaner.nextInt(); escaner.nextLine();
+        System.out.print("Username: ");
+        String user = escaner.nextLine();
+        System.out.print("Password: ");
+        String pass = escaner.nextLine();
+
+        // Instanciar con el Rol correspondiente
+        GestorCuentasBancarias nuevoG = new GestorCuentasBancarias(id, nom, ape, dni, "Direccion sucursal", Rol.G_CUENTAS, user, pass, this.getBanco(), this.getSucursal(), null);
+
+        // Guardar en la lista de la sucursal
+        this.getSucursal().getUsuariosAdmin().add(nuevoG);
+        System.out.println("Gestor de Cuentas creado y asignado a " + this.getSucursal().getNombreSucursal());
+    }
+
+    @Override
+    public void crearGClientes() {
+
+    }
+
+    @Override
+    public void crearGBalances() {
 
     }
 }
