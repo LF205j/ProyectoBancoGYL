@@ -185,7 +185,25 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
 
     @Override
     public void depositarSueldo(int idUser, float monto) {
+        Cliente cliente = buscarClientePorId(idUser);
 
+        // 1. Validar que el cliente exista
+        if (cliente == null) {
+            System.out.println("Error: No se encontró el cliente con ID " + idUser);
+            return;
+        }
+
+        // 2. Validar que el monto sea positivo
+        if (monto <= 0) {
+            System.out.println("Error: El monto a depositar debe ser mayor a cero.");
+            return;
+        }
+
+        // 3. Sumar al saldo (No sobrescribir)
+        float saldoActual = cliente.getCuentaBanco().getSaldo();
+        cliente.getCuentaBanco().setSaldo(saldoActual + monto);
+
+        System.out.println("Depósito exitoso. Nuevo saldo de " + cliente.getNombre() + ": " + (saldoActual + monto));
     }
 
     @Override
@@ -268,13 +286,19 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
 
     @Override
     public Cliente buscarClientePorCbu(String cbu) {
+        for (Cliente cli: this.getSucursal().getClientesSucursal()){
+            if (cli.getCuentaBanco()!=null && cli.getCuentaBanco().getCbu().equals(cbu)){
+                System.out.println("User encontrado");
+                return cli;
+            }
+        }
         return null;
     }
 
 
     @Override
     public void verMisDatos() {
-
+        System.out.println(super.toString());
     }
 
     @Override
@@ -361,11 +385,57 @@ public class AdminBancario  extends Usuarios implements CapacidadAdminBancario {
 
     @Override
     public void crearGClientes() {
+        Scanner escaner = new Scanner(System.in);
+        System.out.println("\n--- Alta de Gestor de Clientes ---");
 
+        System.out.println("Ingrese un id: ");
+        int idCliente=escaner.nextInt();
+        System.out.println("Ingrese el nombre del nuevo cliente");
+        String nombreCli=escaner.nextLine();
+        System.out.println("Ingrese el apellido del nuevo cliente :");
+        String apellidoCli=escaner.nextLine();
+        System.out.println("Ingrese su dni:");
+        int dniCli=escaner.nextInt();
+        System.out.println("Ingrese su direccion: ");
+        String direccion=escaner.nextLine();
+        System.out.println("Ingrese su username: ");
+        String username=escaner.nextLine();
+        System.out.println("Ingrese su password: ");
+        String password=escaner.nextLine();
+        Banco bancoCli=new Banco(getBanco());
+        Sucursal sucuCli=new Sucursal(getSucursal());
+
+        GestorClientes nuevoGC = new GestorClientes(idCliente, nombreCli, apellidoCli, dniCli, direccion, Rol.G_CLIENTES, username, password, this.getBanco(), this.getSucursal(), null);
+
+        this.getSucursal().getUsuariosAdmin().add(nuevoGC);
+        System.out.println("Gestor de Clientes dado de alta.");
     }
 
     @Override
     public void crearGBalances() {
+        Scanner escaner = new Scanner(System.in);
+        System.out.println("\n--- Alta de Gestor de Balances ---");
 
+        System.out.println("Ingrese un id: ");
+        int idGbalance=escaner.nextInt();
+        System.out.println("Ingrese el nombre del nuevo cliente");
+        String nombreGbalance=escaner.nextLine();
+        System.out.println("Ingrese el apellido del nuevo cliente :");
+        String apellidoGbalance=escaner.nextLine();
+        System.out.println("Ingrese su dni:");
+        int dniGbalance=escaner.nextInt();
+        System.out.println("Ingrese su direccion: ");
+        String direccion=escaner.nextLine();
+        System.out.println("Ingrese su username: ");
+        String username=escaner.nextLine();
+        System.out.println("Ingrese su password: ");
+        String password=escaner.nextLine();
+        Banco bancoCli=new Banco(getBanco());
+        Sucursal sucuCli=new Sucursal(getSucursal());
+
+        GestorBalances nuevoB = new GestorBalances(idGbalance, nombreGbalance, apellidoGbalance, dniGbalance, direccion, Rol.G_BALANCES, username, password, this.getBanco(), this.getSucursal(), null);
+
+        this.getSucursal().getUsuariosAdmin().add(nuevoB);
+        System.out.println("Gestor de Balances creado exitosamente.");
     }
 }

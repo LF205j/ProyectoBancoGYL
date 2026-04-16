@@ -65,12 +65,22 @@ public class Admin  extends Usuarios implements CapacidadUserAdmin,CapacidadLogi
 
     @Override
     public void depositarSueldo(int idUser, float monto) {
-        Cliente clienteADepositar=buscarClientePorId(idUser);
+        Cliente cliente = buscarClientePorId(idUser);
 
-        if (monto!=0){
-            clienteADepositar.getCuentaBanco().setSaldo(monto);
+        if (cliente == null) {
+            System.out.println("Error: No se encontró el cliente con ID " + idUser);
+            return;
+        }
+        if (monto <= 0) {
+            System.out.println("Error: El monto a depositar debe ser mayor a cero.");
+            return;
         }
 
+        // 3. Sumar al saldo (No sobrescribir)
+        float saldoActual = cliente.getCuentaBanco().getSaldo();
+        cliente.getCuentaBanco().setSaldo(saldoActual + monto);
+
+        System.out.println("Depósito exitoso. Nuevo saldo de " + cliente.getNombre() + ": " + (saldoActual + monto));
     }
 
     @Override

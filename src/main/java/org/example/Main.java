@@ -81,15 +81,22 @@ public class Main {
                     escaner.nextLine(); // Limpiar buffer
 
                     switch (opcion) {
-                        case 1 -> gClientes.verClientes();
-                        case 2 -> gClientes.crearCliente();
-                        case 3 -> {
+                        case 1 :
+                            gClientes.verClientes();
+                            break;
+                        case 2 :
+                            gClientes.crearCliente();
+                            break;
+                        case 3 :
                             System.out.print("ID a buscar: ");
                             int id = escaner.nextInt();
                             escaner.nextLine();
                             gClientes.buscarClientePorId(id);
-                        }
-                        case 0 -> usuarioLogueado = null;
+                            break;
+
+                        case 0 :
+                            usuarioLogueado = null;
+                            break;
                     }
                 }
 
@@ -107,17 +114,48 @@ public class Main {
                     }
                 }
 
+//                void asignarCuenta(int idUser,int idCuenta);
+//                Cliente buscarClientePorCbu(String cbu);
+//                void verClientes();
+//                void depositarSueldo(int idUser,float monto);
+//                void darBajaCuenta(int id);
+//                Cliente buscarClientePorId(int id);
+//                void datosPorUser(int id);
+//                @Override
+//                void verMisDatos();
+//                void crearGCuentaBancaria();
+//                void crearGBalances();
+//                void crearGClientes();
+//                void crearCliente();
+//                Sucursal crearSucursal();
+//                void asignarResponsables();
+
                 else if (usuarioLogueado instanceof Admin) {
                     Admin adminT = new Admin(usuarioLogueado);
                     System.out.println("\n--Menu Admin--");
-                    System.out.println("1)Ver Clientes\n0)Cerrar Sesion");
+                    System.out.println("1)Ver Clientes\n2)Depositar sueldo\n3)dar baja cuenta\n4)Buscar Cliente por id\n5)datos por user\n6)ver mis datos\n7)Crear G-Cuenta-Bancaria\n8)Crear G-Balances\n9)Crear G-Clientes\n0)Cerrar Sesion");
                     System.out.print("Opcion: ");
                     opcion = escaner.nextInt();
                     escaner.nextLine();
 
                     switch (opcion) {
-                        case 1 -> adminT.verClientes();
-                        case 0 -> usuarioLogueado = null;
+                        case 1 :
+                            adminT.verClientes();
+                            break;
+                        case 2:
+                            //adminT.depositarSueldo();
+                        case 3:
+                            System.out.println("Ingrese el id de la cuenta a dar de baja: ");
+                            int idBaja=escaner.nextInt();
+                            adminT.darBajaCuenta(idBaja);
+                        case 4:
+                            System.out.println("Ingrese el id del cliente a buscar: ");
+                            int idCliente=escaner.nextInt();
+                            adminT.buscarClientePorId(idCliente);
+                            break;
+                        case 0 :
+                            usuarioLogueado = null;
+                            break;
                     }
                 }
 
