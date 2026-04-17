@@ -5,11 +5,13 @@ import org.example.Entity.CuentaBanco;
 import org.example.Entity.Enum.Rol;
 import org.example.Entity.Enum.TipoCuenta;
 import org.example.Entity.Sucursal;
+import org.example.Interface.CapacidadUserCliente;
 import org.example.Interface.CapacidadUserCuentasBancarias;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GestorCuentasBancarias  extends Usuarios implements CapacidadUserCuentasBancarias {
+public class GestorCuentasBancarias  extends Usuarios implements CapacidadUserCuentasBancarias, CapacidadUserCliente {
 
     public GestorCuentasBancarias(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, Banco banco, Sucursal sucursal, CuentaBanco cuentaBanco) {
         super(id, nombre, apellido, dni, direccion, rol, username, password, banco, sucursal, cuentaBanco);
@@ -22,7 +24,7 @@ public class GestorCuentasBancarias  extends Usuarios implements CapacidadUserCu
 
     @Override
     public void darDeBajaCuenta(int idCuenta) {
-        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+        for (Usuarios cli : this.getSucursal().getClientesSucursal()) {
             if (cli.getCuentaBanco().getId() == idCuenta) {
                 if (cli.getCuentaBanco().getEstado()) { // Si está abierta (true)
                     cli.getCuentaBanco().setEstado(false);
@@ -69,7 +71,7 @@ public class GestorCuentasBancarias  extends Usuarios implements CapacidadUserCu
     public void realizarApertura(int idCuenta) {
         boolean encontrado = false;
         // Recorremos los clientes de la sucursal donde trabaja este gestor
-        for (Cliente cli : this.getSucursal().getClientesSucursal()) {
+        for (Usuarios cli : this.getSucursal().getClientesSucursal()) {
             if (cli.getCuentaBanco().getId() == idCuenta) {
                 // Verificamos si ya está abierta
                 if (!cli.getCuentaBanco().getEstado()) {
@@ -87,6 +89,53 @@ public class GestorCuentasBancarias  extends Usuarios implements CapacidadUserCu
         }
 
     }
+
+    @Override
+    public void asignarCuenta(int idUser, int idCuenta) {
+        Usuarios clienteEncontrado = null;
+
+
+        // 1. Buscamos al cliente en la sucursal por su ID
+        for (Usuarios cli : this.getSucursal().getClientesSucursal()) {
+            if (cli.getId() == idUser) {
+                clienteEncontrado = cli;
+                break;
+            }
+        }
+
+        if (clienteEncontrado != null) {
+
+            System.out.println("Cuenta asignada exitosamente.");
+        } else {
+            System.out.println("Error: No se encontró el cliente con ID " + idUser);
+        }
+    }
+
+
+    @Override
+    public void hacerTransferecia(String cbu, ArrayList<Cliente> clientes, float monto) {
+
+    }
+    @Override
+    public void extraer(float monto) {
+        super.extraer(monto);
+    }
+
+    @Override
+    public void depositar(float monto) {
+        super.depositar(monto);
+    }
+
+    @Override
+    public void verMisDatos() {
+        super.verMisDatos();
+    }
+
+    @Override
+    public void transferir(float monto, String cbu) {
+        super.transferir(monto, cbu);
+    }
+
 
 
 }

@@ -4,13 +4,14 @@ import org.example.Entity.Banco;
 import org.example.Entity.CuentaBanco;
 import org.example.Entity.Enum.Rol;
 import org.example.Entity.Sucursal;
+import org.example.Interface.CapacidadUserCliente;
 import org.example.Interface.CapacidadUserGestionClientes;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GestorClientes extends Usuarios implements CapacidadUserGestionClientes {
+public class GestorClientes extends Usuarios implements CapacidadUserGestionClientes, CapacidadUserCliente {
 
     public GestorClientes(int id, String nombre, String apellido, int dni, String direccion, Rol rol, String username, String password, Banco banco, Sucursal sucursal, CuentaBanco cuentaBanco) {
         super(id, nombre, apellido, dni, direccion, rol, username, password, banco, sucursal, cuentaBanco);
@@ -23,10 +24,10 @@ public class GestorClientes extends Usuarios implements CapacidadUserGestionClie
 
     @Override
     public void verClientes() {
-        ArrayList<Cliente>clientesSucu=new ArrayList<>();
+        ArrayList<Usuarios>clientesSucu=new ArrayList<>();
 
         clientesSucu=this.getSucursal().getClientesSucursal();
-        for (Cliente cli: clientesSucu){
+        for (Usuarios cli: clientesSucu){
             cli.verMisDatos();
         }
 
@@ -63,11 +64,11 @@ public class GestorClientes extends Usuarios implements CapacidadUserGestionClie
     @Override
     public void buscarClientePorId(int id) {
         // 1. Obtenemos la lista de la sucursal
-        ArrayList<Cliente> clientes = this.getSucursal().getClientesSucursal();
+        ArrayList<Usuarios> clientes = this.getSucursal().getClientesSucursal();
         boolean encontrado = false;
 
         // 2. Recorremos buscando la coincidencia de ID
-        for (Cliente cli : clientes) {
+        for (Usuarios cli : clientes) {
             if (cli.getId() == id) { // Comparamos el atributo ID
                 cli.verMisDatos();
                 encontrado = true;
@@ -79,4 +80,29 @@ public class GestorClientes extends Usuarios implements CapacidadUserGestionClie
             System.out.println("No se encontró ningún cliente con el ID: " + id);
         }
     }
+
+    @Override
+    public void hacerTransferecia(String cbu, ArrayList<Cliente> clientes, float monto) {
+
+    }
+    @Override
+    public void extraer(float monto) {
+        super.extraer(monto);
+    }
+
+    @Override
+    public void depositar(float monto) {
+        super.depositar(monto);
+    }
+
+    @Override
+    public void verMisDatos() {
+        super.verMisDatos();
+    }
+
+    @Override
+    public void transferir(float monto, String cbu) {
+        super.transferir(monto, cbu);
+    }
 }
+

@@ -10,15 +10,23 @@ public class Sucursal {
     private int id;
     private String direccionSucursal;
     private Banco bancoPadre;
-    private ArrayList<Usuarios>usuariosAdmin;
-    private ArrayList<Cliente>clientesSucursal;
+    //private ArrayList<Usuarios>usuariosAdmin;
+    private ArrayList<Usuarios>clientesSucursal;
 
-    public Sucursal(String nombreSucursal, int id, String direccionSucursal, Banco bancoPadre, ArrayList<Usuarios> usuariosAdmin, ArrayList<Cliente> clientesSucursal) {
+//    public Sucursal(String nombreSucursal, int id, String direccionSucursal, Banco bancoPadre, ArrayList<Usuarios> usuariosAdmin, ArrayList<Cliente> clientesSucursal) {
+//        this.nombreSucursal = nombreSucursal;
+//        this.id = id;
+//        this.direccionSucursal = direccionSucursal;
+//        this.bancoPadre = bancoPadre;
+//        this.usuariosAdmin = usuariosAdmin;
+//        this.clientesSucursal = clientesSucursal;
+//    }
+
+    public Sucursal(String nombreSucursal, int id, String direccionSucursal, Banco bancoPadre, ArrayList<Usuarios> clientesSucursal) {
         this.nombreSucursal = nombreSucursal;
         this.id = id;
         this.direccionSucursal = direccionSucursal;
         this.bancoPadre = bancoPadre;
-        this.usuariosAdmin = usuariosAdmin;
         this.clientesSucursal = clientesSucursal;
     }
 
@@ -31,30 +39,31 @@ public class Sucursal {
         } else {
             this.clientesSucursal = new ArrayList<>();
         }
-        if (s.getUsuariosAdmin() != null) {
-            this.usuariosAdmin = new ArrayList<>(s.usuariosAdmin);
-        } else {
-            this.usuariosAdmin = new ArrayList<>();
-        }
+//        if (s.getUsuariosAdmin() != null) {
+//            this.usuariosAdmin = new ArrayList<>(s.usuariosAdmin);
+//        } else {
+//            this.usuariosAdmin = new ArrayList<>();
+//        }
 
     }
     public Sucursal() {
     }
 
 
-    public ArrayList<Usuarios> getUsuariosAdmin() {
-        return usuariosAdmin;
-    }
+//    public ArrayList<Usuarios> getUsuariosAdmin() {
+//        return usuariosAdmin;
+//    }
+//
+//    public void setUsuariosAdmin(ArrayList<Usuarios> usuariosAdmin) {
+//        this.usuariosAdmin = usuariosAdmin;
+//    }
 
-    public void setUsuariosAdmin(ArrayList<Usuarios> usuariosAdmin) {
-        this.usuariosAdmin = usuariosAdmin;
-    }
 
-    public ArrayList<Cliente> getClientesSucursal() {
+    public ArrayList<Usuarios> getClientesSucursal() {
         return clientesSucursal;
     }
 
-    public void setClientesSucursal(ArrayList<Cliente> clientesSucursal) {
+    public void setClientesSucursal(ArrayList<Usuarios> clientesSucursal) {
         this.clientesSucursal = clientesSucursal;
     }
 
@@ -88,5 +97,16 @@ public class Sucursal {
 
     public void setDireccionSucursal(String direccionSucursal) {
         this.direccionSucursal = direccionSucursal;
+    }
+
+    @Override
+    public String toString() {
+        return "Sucursal{" +
+                "nombreSucursal='" + nombreSucursal + '\'' +
+                ", id=" + id +
+                ", direccionSucursal='" + direccionSucursal + '\'' +
+                ", bancoPadre=" + bancoPadre +
+                ", clientesSucursal=" + clientesSucursal +
+                '}';
     }
 }

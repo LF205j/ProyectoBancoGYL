@@ -4,7 +4,18 @@ import org.example.Entity.CuentaBanco;
 import org.example.Entity.Sucursal;
 import org.example.Entity.Usuarios.Usuarios;
 
-public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,CapacidadUserBalances,CapacidadUsers,CapacidadUserAdmin{
+import java.util.ArrayList;
+
+public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,CapacidadUserBalances,CapacidadUsers,CapacidadUserAdmin,CapacidadLogin{
+    @Override
+    Usuarios buscarClientePorId(int id);
+
+    @Override
+    Usuarios buscarClientePorCbu(String cbu);
+
+    @Override
+    Usuarios iniciarSesion(ArrayList<Usuarios> listaUsers, String username, String password);
+
     void verUsuarios();
     Usuarios crearUsuarios();
     @Override
@@ -14,7 +25,7 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
 
     Sucursal crearSucursal();
     @Override
-    default float hacerBalancesSucursales() {
+    default float hacerBalancesSucursal() {
         return 0;
     }
 
@@ -23,6 +34,7 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
 
     }
 
+    void buscarSucursalPorId(int idSucursal);
     @Override
     void datosPorUser(int id);
 
@@ -62,4 +74,7 @@ public interface CapacidadAdminBancario extends CapacidadUserCuentasBancarias,Ca
 
     @Override
     void crearGBalances();
+
+    @Override
+    void cerrarSesion();
 }

@@ -45,6 +45,10 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
 
     @Override
     public void extraer(float monto) {
+        if (!this.getCuentaBanco().getEstado()) {
+            System.out.println("No se puede realizar la extraccion porque la cuenta no esta abierta");
+            return;
+        }
         if (monto > 0 && monto <= this.getCuentaBanco().getSaldo()) {
             float nuevoSaldo = this.getCuentaBanco().getSaldo() - monto;
             this.getCuentaBanco().setSaldo(nuevoSaldo);
@@ -56,19 +60,31 @@ public class Cliente extends Usuarios implements CapacidadUserCliente, Capacidad
 
     @Override
     public void depositar(float monto) {
-        if (monto!=0){
-            float carga=this.getCuentaBanco().getSaldo()+monto;
+        if (!this.getCuentaBanco().getEstado()) {
+            System.out.println("No se puede realizar el deposito porque la cuenta no esta abierta");
+            return; // Salimos del método inmediatamente
+        }
+
+        if (monto > 0) {
+            float carga = this.getCuentaBanco().getSaldo() + monto;
             this.getCuentaBanco().setSaldo(carga);
+            System.out.println("Depósito exitoso. Nuevo saldo: " + carga);
+        } else {
+            System.out.println("El monto debe ser mayor a cero.");
         }
 
     }
 
     @Override
     public void transferir(float monto,String cbu) {
+        if (!this.getCuentaBanco().getEstado()) {
+            System.out.println("No se puede realizar la transferencia porque la cuenta no esta abierta");
+            return;
+        }
         if (monto > 0 && monto <= this.getCuentaBanco().getSaldo()) {
-            Cliente destino = null;
-            // Buscamos al cliente por CBU en la lista de la sucursal
-            for (Cliente c : this.getSucursal().getClientesSucursal()) {
+            Usuarios destino = null;
+
+            for (Usuarios c : this.getSucursal().getClientesSucursal()) {
                 if (c.getCuentaBanco().getCbu().equals(cbu)) {
                     destino = c;
                     break;
